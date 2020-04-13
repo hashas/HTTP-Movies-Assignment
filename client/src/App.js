@@ -43,6 +43,12 @@ const App = () => {
         />
       </Route>
       
+      {/* For some reason when I used below method of specifying Route
+      I was having problems accessing props.match.params.id in the 
+      component, so I stuck to the above specification instead
+      (importing hooks in the component) as I didn't want to spend 
+      more time troubleshooting. */}
+
       {/* <Route 
         path="/movies/:id"
         render={props => {
@@ -67,7 +73,11 @@ const App = () => {
         render={props => {
           return (
             <Update 
+            // spreading props and passing to the component allows me to access
+            // props.match.params.id and props.history
             {...props}
+            // passing the follow props allows me to update the movie list
+            // in the component
             movieList={movieList} 
             setMovieList={setMovieList} 
             />

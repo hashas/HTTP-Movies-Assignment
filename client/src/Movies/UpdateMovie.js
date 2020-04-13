@@ -1,5 +1,7 @@
-// OBSOLETE code: I copied this files to Update.js in 
-// './Movies/Update/' and continued working from there
+// OBSOLETE COMPONENT: 
+// I copied this files to Update.js in './Movies/Update/' and
+// continued working from there. I retained this for reference
+// only.
 
 // import React, { useState } from 'react';
 // import axios from 'axios';

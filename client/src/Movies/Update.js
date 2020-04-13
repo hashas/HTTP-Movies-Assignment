@@ -7,7 +7,9 @@ import axios from 'axios';
 // {...props} through Route in App.js so I tried the latter, however
 // the redirecting issue turned out to be due to .put() returning just 
 // the updated movie and not the entire list of movies with the updated 
-// one, so I had to reconstruct the updated movie list for App.js state
+// one(see putMovie function below), so I had to reconstruct the updated 
+// movie list for App.js state and never reimplemented these hooks.
+// I did however use this implementation in Movie component.
 
 // // import useRouteMatch to get access to *match* data from <Route>
 // import { useRouteMatch } from 'react-router-dom';
@@ -54,6 +56,10 @@ const Update = props => {
         if (selectedMovie) {
             setFormData(selectedMovie)
         }
+    // playing/removing/adding the following dependency arrays
+    // allowed me to better understand how Effect hook runs
+    // AFTER the component renders and ONLY runs AGAIN
+    // if either of these arrays change
     }, [props.movieList, props.match.params.id] )
 
 
@@ -61,6 +67,10 @@ const Update = props => {
     const handleChange = e => {
         console.log('input changed')
         setFormData({
+            // the spread operator here allows me to 'spread'
+            // any key already defined in the state AND allows
+            // me to 'add/build' on it with each key which is updated
+            // by each input field in the form
             ...formData,
             [e.target.name]: [e.target.value]
         })
@@ -89,6 +99,11 @@ const Update = props => {
                 const updatedMovie = res.data
                 // reconstruct the movieList for App.js
                 const newMovies = props.movieList.map( movie => {
+                    // Using == instead of === solved the problem 
+                    // that when props.history.push() was redirecting to '/'
+                    // it was not refreshing with the updated movieList in '/'. 
+                    // This solved it because I must have been storing
+                    // updatedMovie.id as a string and not a number
                     if (`${movie.id}` == updatedMovie.id) {
                         return updatedMovie;
                     } else {
@@ -97,6 +112,9 @@ const Update = props => {
                 })
                 // set the newMovies list to to the state in App.js
                 props.setMovieList(newMovies)
+                // these console logs allowed to me debug why ==/===
+                // issue which was preventing the redirect to '/' from
+                // loading the updated list of movies 
                 console.log(newMovies)
                 console.log(props.movieList)
                 // redirect back to '/'
