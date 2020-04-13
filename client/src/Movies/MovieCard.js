@@ -1,4 +1,6 @@
 import React from 'react';
+// import UpdateMovie
+// import UpdateMovie from "./UpdateMovie"
 
 const MovieCard = props => {
   const { title, director, metascore, stars } = props.movie;
@@ -18,6 +20,7 @@ const MovieCard = props => {
           {star}
         </div>
       ))}
+      {/* <UpdateMovie /> */}
     </div>
   );
 };
