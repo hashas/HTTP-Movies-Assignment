@@ -2,10 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouteMatch } from 'react-router-dom';
 import MovieCard from './MovieCard';
+
 //import Link from react router dom
 import { Link } from "react-router-dom";
 
-function Movie({ addToSavedList }) {
+// import useHistory to redirect in axios.delete
+import { useHistory } from 'react-router-dom';
+
+function Movie(props) {
+  // define history for the redirect for in the axios.delete request
+  const history = useHistory();
+
   const [movie, setMovie] = useState(null);
   const match = useRouteMatch();
 
@@ -17,7 +24,7 @@ function Movie({ addToSavedList }) {
   };
 
   const saveMovie = () => {
-    addToSavedList(movie);
+    props.addToSavedList(movie);
   };
 
   useEffect(() => {
@@ -26,6 +33,29 @@ function Movie({ addToSavedList }) {
 
   if (!movie) {
     return <div>Loading movie information...</div>;
+  }
+
+  // handle function for when 'delete' button is pressed
+  const handleDelete = e => {
+    e.preventDefault()
+    axios
+      .delete(`http://localhost:5000/api/movies/${match.params.id}`)
+      .then(res => {
+        console.log(res)
+        const deletedId = res.data;
+        const newMovies = props.movieList.filter( movie => {
+          if (`${movie.id}` != deletedId) {
+              return movie;
+          }
+        })
+        console.log(newMovies)
+        props.setMovieList(newMovies);
+        console.log(newMovies)
+        history.push('/')
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (
@@ -40,6 +70,7 @@ function Movie({ addToSavedList }) {
           Update
         </button>
       </Link>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }

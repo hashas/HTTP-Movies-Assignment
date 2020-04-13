@@ -89,7 +89,7 @@ const Update = props => {
                 const updatedMovie = res.data
                 // reconstruct the movieList for App.js
                 const newMovies = props.movieList.map( movie => {
-                    if (`${movie.id}` === updatedMovie.id) {
+                    if (`${movie.id}` == updatedMovie.id) {
                         return updatedMovie;
                     } else {
                         return movie;
@@ -97,6 +97,8 @@ const Update = props => {
                 })
                 // set the newMovies list to to the state in App.js
                 props.setMovieList(newMovies)
+                console.log(newMovies)
+                console.log(props.movieList)
                 // redirect back to '/'
                 props.history.push("/") 
             })

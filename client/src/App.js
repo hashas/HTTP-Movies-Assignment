@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     getMovieList();
-  }, []);
+  }, [setMovieList]);
 
   return (
     <>
@@ -36,14 +36,32 @@ const App = () => {
       </Route>
 
       <Route path="/movies/:id">
-        <Movie addToSavedList={addToSavedList} />
+        <Movie 
+          addToSavedList={addToSavedList}
+          movieList={movieList}
+          setMovieList={setMovieList}
+        />
       </Route>
+      
+      {/* <Route 
+        path="/movies/:id"
+        render={props => {
+          return (
+            <Movie 
+              {...props}
+              addToSavedList={addToSavedList} 
+              setMovieList={setMovieList}
+            />
+          )
+        }}
+      /> */}
 
       {/* add a new Route path */}
       {/* <Route path="/update-movie/:id">
         <UpdateMovie movieList={movieList} updateList={setMovieList}/>
       </Route> */}
 
+      {/* declared the above route the old way so that I could spread props */}
       <Route 
         path="/update-movie/:id"
         render={props => {
